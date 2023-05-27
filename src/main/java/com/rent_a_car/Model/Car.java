@@ -3,14 +3,13 @@ package com.rent_a_car.Model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class Car implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_car;
-    private String licence_plate;
+    private Long idCar;
+    private String licencePlate;
     private String description;
     private String image;
     private String cylinder_capacity;
@@ -23,9 +22,9 @@ public class Car implements Serializable {
     public Car() {
     }
 
-    public Car(Long id_car, String licence_plate, String description, String image, String cylinder_capacity, int capacity, String model_year, TypeCar typeCar) {
-        this.id_car = id_car;
-        this.licence_plate = licence_plate;
+    public Car(Long idCar, String licencePlate, String description, String image, String cylinder_capacity, int capacity, String model_year, TypeCar typeCar) {
+        this.idCar = idCar;
+        this.licencePlate = licencePlate;
         this.description = description;
         this.image = image;
         this.cylinder_capacity = cylinder_capacity;
@@ -34,20 +33,20 @@ public class Car implements Serializable {
         this.typeCar = typeCar;
     }
 
-    public Long getId_car() {
-        return id_car;
+    public Long getIdCar() {
+        return idCar;
     }
 
-    public void setId_car(Long id_car) {
-        this.id_car = id_car;
+    public void setIdCar(Long id_car) {
+        this.idCar = id_car;
     }
 
-    public String getLicence_plate() {
-        return licence_plate;
+    public String getLicencePlate() {
+        return licencePlate;
     }
 
-    public void setLicence_plate(String licence_plate) {
-        this.licence_plate = licence_plate;
+    public void setLicencePlate(String licence_plate) {
+        this.licencePlate = licence_plate;
     }
 
     public String getDescription() {

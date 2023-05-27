@@ -23,37 +23,47 @@ public class RentController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/{id_rent}")
+    @GetMapping("/{idRent}")
     @CrossOrigin(origins = "*",maxAge = 3600)
-    public ResponseEntity<Rent> findById(@PathVariable Long id_rent){
-        if(!rentRepository.findById(id_rent).isPresent()){
+    public ResponseEntity<Rent> findById(@PathVariable Long idRent){
+        if(!rentRepository.findById(idRent).isPresent()){
             ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(rentRepository.findById(id_rent).get());
+        return ResponseEntity.ok(rentRepository.findById(idRent).get());
     }
 
     @PostMapping
     @CrossOrigin(origins = "*",maxAge = 3600)
     public ResponseEntity create (@RequestBody Rent rent){
+       if(rentRepository.existsByCar_IdCar(rent.getCar().getIdCar())){
+            return ResponseEntity.badRequest().build();
+        }
+
+       if(rentRepository.existsByUsername_IdUser(rent.getUsername().getIdUser()) && rentRepository.existsByDateRent(rent.getDateRent()) ){
+          return ResponseEntity.badRequest().build();
+
+       }
         return ResponseEntity.ok(rentRepository.save(rent));
+
     }
 
     @PutMapping
     @CrossOrigin(origins = "*",maxAge = 3600)
     public ResponseEntity<Rent> update(@RequestBody Rent rent){
-        if(!rentRepository.findById(rent.getId_rent()).isPresent()){
+        if(!rentRepository.findById(rent.getIdRent()).isPresent()){
             ResponseEntity.badRequest().build();
         }
+
         return ResponseEntity.ok(rentRepository.save(rent));
     }
 
-    @DeleteMapping("/{id_rent}")
+    @DeleteMapping("/{idRent}")
     @CrossOrigin(origins = "*",maxAge = 3600)
-    public ResponseEntity<Rent> delete(@PathVariable Long id_rent){
-        if(!rentRepository.findById(id_rent).isPresent()){
+    public ResponseEntity<Rent> delete(@PathVariable Long idRent){
+        if(!rentRepository.findById(idRent).isPresent()){
             ResponseEntity.badRequest().build();
         }
-        rentRepository.delete(rentRepository.findById(id_rent).get());
+        rentRepository.delete(rentRepository.findById(idRent).get());
         return ResponseEntity.ok().build();
     }
 }

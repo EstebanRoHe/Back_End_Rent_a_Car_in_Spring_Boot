@@ -2,7 +2,6 @@ package com.rent_a_car.Controllers;
 
 import com.rent_a_car.Model.Car;
 import com.rent_a_car.Repository.CarRepository;
-import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,36 +26,39 @@ public class CarController {
     @PostMapping
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity create(@RequestBody Car car){
+        if(carRepository.existsByLicencePlate(car.getLicencePlate())){
+            return  ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(carRepository.save(car));
     }
 
-    @GetMapping("/{id_car}")
+    @GetMapping("/{idCar}")
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<Car> findById(@PathVariable Long id_car){
-        if(!carRepository.findById(id_car).isPresent()){
+    public ResponseEntity<Car> findById(@PathVariable Long idCar){
+        if(!carRepository.findById(idCar).isPresent()){
             ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(carRepository.findById(id_car).get());
+        return ResponseEntity.ok(carRepository.findById(idCar).get());
     }
 
     @PutMapping
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Car> update(@RequestBody Car car){
-        if(!carRepository.findById(car.getId_car()).isPresent()){
+        if(!carRepository.findById(car.getIdCar()).isPresent()){
             ResponseEntity.badRequest().build();
         }
 
         return ResponseEntity.ok(carRepository.save(car));
     }
 
-    @DeleteMapping("/{id_car}")
+    @DeleteMapping("/{idCar}")
     @CrossOrigin(origins = "*",maxAge = 3600)
-    public ResponseEntity<Car> delete(@PathVariable Long id_car){
-        if(!carRepository.findById(id_car).isPresent()){
+    public ResponseEntity<Car> delete(@PathVariable Long idCar){
+        if(!carRepository.findById(idCar).isPresent()){
             ResponseEntity.badRequest().build();
         }
 
-        carRepository.delete(carRepository.findById(id_car).get());
+        carRepository.delete(carRepository.findById(idCar).get());
         return ResponseEntity.ok().build();
     }
 }

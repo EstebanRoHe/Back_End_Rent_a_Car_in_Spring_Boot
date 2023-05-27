@@ -5,11 +5,11 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Username")
+
 public class Username implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_username;
+    private Long idUser;
     private String name;
     private String lastName;
     private String username;
@@ -19,8 +19,8 @@ public class Username implements Serializable {
     public Username() {
     }
 
-    public Username(Long id_username, String name, String lastName, String username, String password, String email) {
-        this.id_username = id_username;
+    public Username(Long idUser, String name, String lastName, String username, String password, String email) {
+        this.idUser = idUser;
         this.name = name;
         this.lastName = lastName;
         this.username = username;
@@ -28,12 +28,12 @@ public class Username implements Serializable {
         this.email = email;
     }
 
-    public Long getId_username() {
-        return id_username;
+    public Long getIdUser() {
+        return idUser;
     }
 
-    public void setId_username(Long id_username) {
-        this.id_username = id_username;
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getName() {

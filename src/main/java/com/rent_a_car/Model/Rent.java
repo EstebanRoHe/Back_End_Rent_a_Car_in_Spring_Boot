@@ -3,40 +3,38 @@ package com.rent_a_car.Model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class Rent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_rent;
+    private Long idRent;
 
     @ManyToOne
     @JoinColumn(name = "username")
     private Username username;
 
-
     @ManyToOne
     @JoinColumn(name = "car")
     private Car car;
-    private String date_rent;
+    private String dateRent;
 
     public Rent() {
     }
 
-    public Rent(Long id_rent, Username username, Car car, String date_rent) {
-        this.id_rent = id_rent;
+    public Rent(Long idRent, Username username, Car car, String dateRent) {
+        this.idRent = idRent;
         this.username = username;
         this.car = car;
-        this.date_rent = date_rent;
+        this.dateRent = dateRent;
     }
 
-    public Long getId_rent() {
-        return id_rent;
+    public Long getIdRent() {
+        return idRent;
     }
 
-    public void setId_rent(Long id_rent) {
-        this.id_rent = id_rent;
+    public void setIdRent(Long idRent) {
+        this.idRent = idRent;
     }
 
     public Username getUsername() {
@@ -55,11 +53,11 @@ public class Rent implements Serializable {
         this.car = car;
     }
 
-    public String getDate_rent() {
-        return date_rent;
+    public String getDateRent() {
+        return dateRent;
     }
 
-    public void setDate_rent(String date_rent) {
-        this.date_rent = date_rent;
+    public void setDateRent(String dateRent) {
+        this.dateRent = dateRent;
     }
 }
