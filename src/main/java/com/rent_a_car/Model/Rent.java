@@ -12,7 +12,7 @@ public class Rent implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "username")
-    private Username username;
+    private UserEntity username;
 
     @ManyToOne
     @JoinColumn(name = "car")
@@ -22,7 +22,7 @@ public class Rent implements Serializable {
     public Rent() {
     }
 
-    public Rent(Long idRent, Username username, Car car, String dateRent) {
+    public Rent(Long idRent, UserEntity username, Car car, String dateRent) {
         this.idRent = idRent;
         this.username = username;
         this.car = car;
@@ -37,11 +37,11 @@ public class Rent implements Serializable {
         this.idRent = idRent;
     }
 
-    public Username getUsername() {
+    public UserEntity getUsername() {
         return username;
     }
 
-    public void setUsername(Username username) {
+    public void setUsername(UserEntity username) {
         this.username = username;
     }
 

@@ -1,18 +1,17 @@
 package com.rent_a_car.Repository;
 
-import com.rent_a_car.Model.Username;
+import com.rent_a_car.Model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @Repository
-public interface UsernameRepository extends JpaRepository<Username,Long> {
+public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 
-
+    Optional<UserEntity> findByUsername(String username);
 }

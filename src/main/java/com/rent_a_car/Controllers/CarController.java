@@ -4,6 +4,7 @@ import com.rent_a_car.Model.Car;
 import com.rent_a_car.Repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class CarController {
     private CarRepository carRepository;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     @CrossOrigin(origins = "*",maxAge = 3600)
     public ResponseEntity<List<Car>> findAll(){
         List<Car> list=new ArrayList<Car>();
@@ -24,6 +26,7 @@ public class CarController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity create(@RequestBody Car car){
         if(carRepository.existsByLicencePlate(car.getLicencePlate())){
@@ -33,6 +36,7 @@ public class CarController {
     }
 
     @GetMapping("/{idCar}")
+    @PreAuthorize("permitAll()")
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Car> findById(@PathVariable Long idCar){
         if(!carRepository.findById(idCar).isPresent()){
@@ -42,6 +46,7 @@ public class CarController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Car> update(@RequestBody Car car){
         if(!carRepository.findById(car.getIdCar()).isPresent()){
@@ -52,6 +57,7 @@ public class CarController {
     }
 
     @DeleteMapping("/{idCar}")
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "*",maxAge = 3600)
     public ResponseEntity<Car> delete(@PathVariable Long idCar){
         if(!carRepository.findById(idCar).isPresent()){

@@ -2,18 +2,21 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Rent_a_Car" />
         <module name="Back-end-Rent-a-Car-in-Spring-boot-" />
+        <module name="Back_End_Rent_a_Car_in_Spring_Boot" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Back-end-Rent-a-Car-in-Spring-boot-" options="-parameters" />
+      <module name="Back_End_Rent_a_Car_in_Spring_Boot" options="-parameters" />
       <module name="Rent_a_Car" options="-parameters" />
     </option>
   </component>
