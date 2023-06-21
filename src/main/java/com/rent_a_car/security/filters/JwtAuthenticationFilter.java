@@ -60,6 +60,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
         String token = jwtUtils.generateAccesToken(user.getUsername());
+        String role = user.getAuthorities().iterator().next().getAuthority();
 
         response.addHeader("Authorization", token);
 
@@ -67,6 +68,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         httpResponse.put("token", token);
         httpResponse.put("Message","Autenticacion Correcta");
         httpResponse.put("Username",user.getUsername());
+        httpResponse.put("Role", role);
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
         response.setStatus(HttpStatus.OK.value());
