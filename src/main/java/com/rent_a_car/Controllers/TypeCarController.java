@@ -1,6 +1,7 @@
 package com.rent_a_car.Controllers;
 
 import com.rent_a_car.Model.TypeCar;
+import com.rent_a_car.Model.UserEntity;
 import com.rent_a_car.Repository.TypeCarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,17 @@ public class TypeCarController {
 
         typeCarRepository.delete(typeCarRepository.findById(id_typeCar).get());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/filtro")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<TypeCar>> getTypeCarDescription(@RequestParam String description) {
+        List<TypeCar> typeCar = typeCarRepository.findByDescriptionContainingIgnoreCase(description);
+        if (!typeCar.isEmpty()) {
+            return ResponseEntity.ok(typeCar);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

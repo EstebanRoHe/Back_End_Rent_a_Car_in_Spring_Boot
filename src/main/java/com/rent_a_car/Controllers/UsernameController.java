@@ -32,7 +32,7 @@ public class UsernameController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin(origins = "*",maxAge = 3600)
     public ResponseEntity<List<UserEntity>> findAll(){
         List<UserEntity> list = new ArrayList<UserEntity>();
@@ -101,48 +101,57 @@ public class UsernameController {
         return ResponseEntity.ok(usernameRepository.save(user));
     }
 
+    @GetMapping("/name")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserEntity>> getUsersByName(@RequestParam String name) {
+        List<UserEntity> users = usernameRepository.findByNameContainingIgnoreCase(name);
+        if (!users.isEmpty()) {
+            return ResponseEntity.ok(users);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/email")
+    @PreAuthorize("permitAll()")
+    @CrossOrigin(origins = "*",maxAge = 3600)
+    public ResponseEntity<List<String>> getAllEmails() {
+        List<String> emails = usernameRepository
+                              .findAll()
+                              .stream()
+                              .map(UserEntity::getEmail)
+                              .collect(Collectors.toList());
+        if (!emails.isEmpty()) {
+            return ResponseEntity.ok(emails);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/username")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<List<String>> getAllUsernames() {
+        List<String> usernames = usernameRepository
+                                .findAll().stream()
+                                .map(UserEntity::getUsername)
+                                .collect(Collectors.toList());
+        if (!usernames.isEmpty()) {
+            return ResponseEntity.ok(usernames);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/buscar/{username}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
+    @CrossOrigin(origins = "*",maxAge = 3600)
+    public ResponseEntity<UserEntity>findByIdUsername(@PathVariable String username){
+        if(!usernameRepository.existsByUsername(username)){
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(usernameRepository.findByUsername(username).get() );
+    }
+
 }
 
-/*
-    @PostMapping
-    public ResponseEntity<UserEntity> create(@RequestBody UserEntity username){
 
-        if (usernameRepository.existsByUsername(username.getUsername())) {
-            return ResponseEntity.badRequest().build();
-        }
-        if (usernameRepository.existsByEmail(username.getEmail())) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(usernameRepository.save(username));
-    }
-
-     */
-
- /*
-    @PostMapping
-    @PreAuthorize("permitAll()")
-    public ResponseEntity<?> createUser(@RequestBody CreateUserDTO createUserDTO){
-        if (usernameRepository.existsByUsername(createUserDTO.getUsername())) {
-            return ResponseEntity.badRequest().build();
-        }
-        if (usernameRepository.existsByEmail(createUserDTO.getEmail())) {
-            return ResponseEntity.badRequest().build();
-        }
-        Set<RoleEntity> roles = createUserDTO.getRoles().stream()
-                .map(role -> RoleEntity.builder()
-                        .name(ERole.valueOf(role))
-                        .build()
-                ).collect(Collectors.toSet());
-
-        UserEntity userEntity = UserEntity.builder()
-                .name(createUserDTO.getName())
-                .lastName(createUserDTO.getLastName())
-                .username(createUserDTO.getUsername())
-                .password(passwordEncoder.encode(createUserDTO.getPassword()))
-                .email(createUserDTO.getEmail())
-                .roles(roles)
-                .build();
-        usernameRepository.save(userEntity);
-        return ResponseEntity.ok(userEntity);
-    }
-     */

@@ -1,10 +1,16 @@
 package com.rent_a_car.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+//@Projection(name = "rentProjection", types = { Rent.class })
 public class Rent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,45 +25,5 @@ public class Rent implements Serializable {
     private Car car;
     private String dateRent;
 
-    public Rent() {
-    }
 
-    public Rent(Long idRent, UserEntity username, Car car, String dateRent) {
-        this.idRent = idRent;
-        this.username = username;
-        this.car = car;
-        this.dateRent = dateRent;
-    }
-
-    public Long getIdRent() {
-        return idRent;
-    }
-
-    public void setIdRent(Long idRent) {
-        this.idRent = idRent;
-    }
-
-    public UserEntity getUsername() {
-        return username;
-    }
-
-    public void setUsername(UserEntity username) {
-        this.username = username;
-    }
-
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
-    public String getDateRent() {
-        return dateRent;
-    }
-
-    public void setDateRent(String dateRent) {
-        this.dateRent = dateRent;
-    }
 }

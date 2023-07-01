@@ -44,8 +44,12 @@ public class SecurityConfig {
                 .csrf(config -> config.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.POST,"/User").permitAll();
-                    auth.requestMatchers(HttpMethod.GET,"/User").permitAll();
                      auth.requestMatchers(HttpMethod.GET,"/Car").permitAll();
+                     auth.requestMatchers(HttpMethod.GET,"/filtrodescription").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/Log").permitAll();
+                    auth.requestMatchers(HttpMethod.GET,"/User/email").permitAll();
+                    auth.requestMatchers(HttpMethod.GET,"/User/username").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/Email/sendMessage").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

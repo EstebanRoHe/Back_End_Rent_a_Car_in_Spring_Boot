@@ -1,6 +1,7 @@
 package com.rent_a_car.Controllers;
 
 import com.rent_a_car.Model.Car;
+import com.rent_a_car.Model.TypeCar;
 import com.rent_a_car.Repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,4 +68,29 @@ public class CarController {
         carRepository.delete(carRepository.findById(idCar).get());
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/filtro")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Car>> getCarLicencePlate(@RequestParam String licencePlate) {
+        List<Car> Car = carRepository.findByLicencePlateContainingIgnoreCase(licencePlate);
+        if (!Car.isEmpty()) {
+            return ResponseEntity.ok(Car);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/filtrodescription")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<List<Car>> getCarDescription(@RequestParam String description) {
+        List<Car> Car = carRepository.findByTypeCar_DescriptionContainingIgnoreCase (description);
+        if (!Car.isEmpty()) {
+            return ResponseEntity.ok(Car);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 }

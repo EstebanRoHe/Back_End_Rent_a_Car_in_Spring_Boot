@@ -1,5 +1,6 @@
 package com.rent_a_car.Controllers;
 
+import com.rent_a_car.Model.Car;
 import com.rent_a_car.Model.Rent;
 import com.rent_a_car.Repository.RentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,4 +74,29 @@ public class RentController {
         rentRepository.delete(rentRepository.findById(idRent).get());
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/filtro")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    public ResponseEntity<List<Rent>> getRentUsername(@RequestParam String username) {
+        List<Rent> Rent = rentRepository.findByUsername_UsernameContainingIgnoreCase(username);
+        if (!Rent.isEmpty()) {
+            return ResponseEntity.ok(Rent);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/username/{username}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public ResponseEntity<List<Rent>> getRentByUsername(@PathVariable String username) {
+        List<Rent> rentList = rentRepository.findByUsername_Username(username);
+        if (!rentList.isEmpty()) {
+            return ResponseEntity.ok(rentList);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 }

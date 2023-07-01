@@ -1,6 +1,7 @@
 package com.rent_a_car.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,10 @@ public class UserEntity implements Serializable {
             joinColumns = @JoinColumn(name ="user_id"),
             inverseJoinColumns = @JoinColumn (name = "role_id")
     )
+
     private Set<RoleEntity> roles;
+
+
 
 
 }

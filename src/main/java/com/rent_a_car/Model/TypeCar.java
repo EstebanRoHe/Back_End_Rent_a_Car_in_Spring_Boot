@@ -1,9 +1,14 @@
 package com.rent_a_car.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "TypeCar")
 public class TypeCar implements Serializable {
@@ -12,27 +17,4 @@ public class TypeCar implements Serializable {
     private Long id_typeCar;
     private String description;
 
-    public TypeCar() {
-    }
-
-    public TypeCar(Long id_typeCar, String description) {
-        this.id_typeCar = id_typeCar;
-        this.description = description;
-    }
-
-    public Long getId_typeCar() {
-        return id_typeCar;
-    }
-
-    public void setId_typeCar(Long id_typeCar) {
-        this.id_typeCar = id_typeCar;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
