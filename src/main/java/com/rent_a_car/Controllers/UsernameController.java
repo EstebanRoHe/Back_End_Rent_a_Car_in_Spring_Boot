@@ -1,6 +1,7 @@
 package com.rent_a_car.Controllers;
 
 import com.rent_a_car.Controllers.request.CreateUserDTO;
+import com.rent_a_car.Controllers.request.UpdatePasswordDTO;
 import com.rent_a_car.Model.ERole;
 import com.rent_a_car.Model.RoleEntity;
 import com.rent_a_car.Model.UserEntity;
@@ -8,6 +9,7 @@ import com.rent_a_car.Repository.RoleRepository;
 import com.rent_a_car.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +42,7 @@ public class UsernameController {
         return ResponseEntity.ok(list);
     }
     @GetMapping("/{idUser}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
     @CrossOrigin(origins = "*",maxAge = 3600)
     public ResponseEntity<UserEntity>findById(@PathVariable Long idUser){
 
@@ -92,7 +94,7 @@ public class UsernameController {
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
     @CrossOrigin(origins = "*",maxAge = 3600)
     public ResponseEntity<UserEntity> update(@RequestBody UserEntity user){
         if(!usernameRepository.findById(user.getIdUser()).isPresent()){
@@ -151,6 +153,23 @@ public class UsernameController {
         }
         return ResponseEntity.ok(usernameRepository.findByUsername(username).get() );
     }
+
+    @PutMapping("/updatePassword")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<UserEntity> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
+        UserEntity user = usernameRepository.findById(updatePasswordDTO.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(updatePasswordDTO.getCurrentPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        user.setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
+        UserEntity updatedUser = usernameRepository.save(user);
+
+        return ResponseEntity.ok(updatedUser);
+    }
+
+
 
 }
 

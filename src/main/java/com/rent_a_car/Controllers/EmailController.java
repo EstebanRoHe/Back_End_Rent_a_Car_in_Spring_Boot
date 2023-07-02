@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/Email")
+@RequestMapping(path = "/Email")
 @PreAuthorize("permitAll()")
 public class EmailController {
     @Autowired
