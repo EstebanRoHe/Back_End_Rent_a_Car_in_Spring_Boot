@@ -46,11 +46,13 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST,"/User").permitAll();
                     //auth.requestMatchers(HttpMethod.PUT, "/User/updatePassword").hasRole("USER");
                     auth.requestMatchers(HttpMethod.GET,"/Car").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/Car").hasRole("ADMIN");
                     auth.requestMatchers(HttpMethod.GET,"/Car/filtrodescription").permitAll();
                     auth.requestMatchers(HttpMethod.POST,"/Log").permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/User/email").permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/User/username").permitAll();
                     auth.requestMatchers("/Email/sendMessage").permitAll();
+                    auth.requestMatchers("/files/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

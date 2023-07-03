@@ -10,18 +10,25 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Set;
 
 @SpringBootApplication
-public class RentACarApplication {
+public class RentACarApplication implements WebMvcConfigurer  {
 
     public static void main(String[] args) {
         SpringApplication.run(RentACarApplication.class, args);
     }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("file:src/main/resources/files/");
+    }
+
         @Autowired
         PasswordEncoder passwordEncoder;
-
         @Autowired
         UserRepository userRepository;
 
@@ -57,5 +64,6 @@ public class RentACarApplication {
 
 
     }
+
 
 }
