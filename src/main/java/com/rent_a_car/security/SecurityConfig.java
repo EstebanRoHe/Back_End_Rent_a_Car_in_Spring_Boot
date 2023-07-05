@@ -52,7 +52,6 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.GET,"/User/email").permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/User/username").permitAll();
                     auth.requestMatchers("/Email/sendMessage").permitAll();
-                    auth.requestMatchers("/cars/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {

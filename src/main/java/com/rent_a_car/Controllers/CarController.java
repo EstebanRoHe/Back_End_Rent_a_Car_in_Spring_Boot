@@ -22,15 +22,6 @@ public class CarController {
     @Autowired
     private CarRepository carRepository;
 
-    @Value("${cloudinary.cloud_name}")
-    private String user;
-
-    @Value("${cloudinary.api_key}")
-    private String pass;
-
-    @Value("${cloudinary.api_secret}")
-    private String api_secret;
-
 
     @GetMapping
     @PreAuthorize("permitAll()")
@@ -63,9 +54,9 @@ public class CarController {
                 MultipartFile file = imagen.get();
                 byte[] fileBytes = file.getBytes();
                 Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                        "cloud_name", user,
-                        "api_key", pass,
-                        "api_secret", api_secret
+                        "cloud_name", "deyujd9fn",
+                        "api_key", "562724318568244",
+                        "api_secret", "CsL7qkiEm_pFpCQRAAC-SxjbQfo"
                 ));
                 Map<String, Object> uploadResult = cloudinary.uploader().upload(fileBytes, ObjectUtils.emptyMap());
                 String imageUrl = (String) uploadResult.get("secure_url");
