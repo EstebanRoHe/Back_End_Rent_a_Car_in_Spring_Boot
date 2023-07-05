@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk
 
-COPY target/Rent_a_Car-0.0.1-SNAPSHOT.jar app.jar
+COPY target/Rent_a_Car-0.0.2-SNAPSHOT.jar app.jar
 
 VOLUME /files
 
@@ -13,7 +13,9 @@ ENV SPRING_MAIL_USERNAME=rentacarspringboot@gmail.com
 ENV SPRING_MAIL_PASSWORD=onpmnegqwzpvvlgg
 ENV SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
 ENV SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
-
+ENV CLOUDINARY_CLOUD_NAME=deyujd9fn
+ENV CLOUDINARY_API_KEY=562724318568244
+ENV CLOUDINARY_API_SECRET=CsL7qkiEm_pFpCQRAAC-SxjbQfo
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
