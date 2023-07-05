@@ -1,22 +1,19 @@
 package com.rent_a_car.Controllers;
-
+import com.cloudinary.*;
+import com.cloudinary.utils.ObjectUtils;
 import com.rent_a_car.Model.Car;
 import com.rent_a_car.Model.TypeCar;
 import com.rent_a_car.Repository.CarRepository;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +21,16 @@ import java.util.Optional;
 public class CarController {
     @Autowired
     private CarRepository carRepository;
+
+    @Value("${cloudinary.cloud_name}")
+    private String user;
+
+    @Value("${cloudinary.api_key}")
+    private String pass;
+
+    @Value("${cloudinary.api_secret}")
+    private String api_secret;
+
 
     @GetMapping
     @PreAuthorize("permitAll()")
@@ -34,42 +41,44 @@ public class CarController {
         return ResponseEntity.ok(list);
     }
 
-@PostMapping
-@PreAuthorize("hasRole('ADMIN')")
-@CrossOrigin(origins = "*", maxAge = 3600)
-public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String> licencePlate,
-                                  @RequestParam("description") Optional<String> description,
-                                  @RequestParam("cylinder_capacity") Optional<String> cylinder_capacity,
-                                  @RequestParam("capacity") Optional<Integer> capacity,
-                                  @RequestParam("model_year") Optional<String> model_year,
-                                  @RequestParam("imagen") Optional<MultipartFile> imagen,
-                                  @RequestParam("typeCar") Optional<TypeCar> typeCar) {
-    try {
-        Car car = new Car();
-        car.setLicencePlate(licencePlate.orElse(null));
-        car.setDescription(description.orElse(null));
-        car.setCylinder_capacity(cylinder_capacity.orElse(null));
-        car.setCapacity(capacity.orElse(null));
-        car.setModel_year(model_year.orElse(null));
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String> licencePlate,
+                                      @RequestParam("description") Optional<String> description,
+                                      @RequestParam("cylinder_capacity") Optional<String> cylinder_capacity,
+                                      @RequestParam("capacity") Optional<Integer> capacity,
+                                      @RequestParam("model_year") Optional<String> model_year,
+                                      @RequestParam("imagen") Optional<MultipartFile> imagen,
+                                      @RequestParam("typeCar") Optional<TypeCar> typeCar) {
+        try {
+            Car car = new Car();
+            car.setLicencePlate(licencePlate.orElse(null));
+            car.setDescription(description.orElse(null));
+            car.setCylinder_capacity(cylinder_capacity.orElse(null));
+            car.setCapacity(capacity.orElse(null));
+            car.setModel_year(model_year.orElse(null));
 
-        if (imagen.isPresent() && !imagen.get().isEmpty()) {
-            byte[] bytes = imagen.get().getBytes();
-            String filename = imagen.get().getOriginalFilename();
-            Path path = Paths.get("src/main/resources/files/" + filename);
-            Files.write(path, bytes);
-            String imageUrl = "/files/" + filename;
+            if (imagen.isPresent() && !imagen.get().isEmpty()) {
+                MultipartFile file = imagen.get();
+                byte[] fileBytes = file.getBytes();
+                Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                        "cloud_name", user,
+                        "api_key", pass,
+                        "api_secret", api_secret
+                ));
+                Map<String, Object> uploadResult = cloudinary.uploader().upload(fileBytes, ObjectUtils.emptyMap());
+                String imageUrl = (String) uploadResult.get("secure_url");
+                car.setImage(imageUrl);
+            }
 
-            car.setImage(imageUrl);
+            car.setTypeCar(typeCar.orElse(null));
+            return ResponseEntity.ok(carRepository.save(car));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        car.setTypeCar(typeCar.orElse(null));
-        return ResponseEntity.ok(carRepository.save(car));
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-}
-
-
-
 
     @GetMapping("/{idCar}")
     @PreAuthorize("permitAll()")
@@ -128,6 +137,7 @@ public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String>
 
 }
 /*
+//guardar normal
     @PostMapping
     @PreAuthorize("permitAll()")
     @CrossOrigin(origins = "*", maxAge = 3600)
@@ -137,5 +147,106 @@ public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String>
         }
         return ResponseEntity.ok(carRepository.save(car));
     }
+
+ */
+
+/*
+
+//es para guardar local
+@PostMapping
+@PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = "*", maxAge = 3600)
+public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String> licencePlate,
+                                  @RequestParam("description") Optional<String> description,
+                                  @RequestParam("cylinder_capacity") Optional<String> cylinder_capacity,
+                                  @RequestParam("capacity") Optional<Integer> capacity,
+                                  @RequestParam("model_year") Optional<String> model_year,
+                                  @RequestParam("imagen") Optional<MultipartFile> imagen,
+                                  @RequestParam("typeCar") Optional<TypeCar> typeCar) {
+    try {
+        Car car = new Car();
+        car.setLicencePlate(licencePlate.orElse(null));
+        car.setDescription(description.orElse(null));
+        car.setCylinder_capacity(cylinder_capacity.orElse(null));
+        car.setCapacity(capacity.orElse(null));
+        car.setModel_year(model_year.orElse(null));
+
+        if (imagen.isPresent() && !imagen.get().isEmpty()) {
+            byte[] bytes = imagen.get().getBytes();
+            String filename = imagen.get().getOriginalFilename();
+            Path path = Paths.get("src/main/resources/files/" + filename);
+            Files.write(path, bytes);
+            String imageUrl = "/files/" + filename;
+
+            car.setImage(imageUrl);
+        }
+        car.setTypeCar(typeCar.orElse(null));
+        return ResponseEntity.ok(carRepository.save(car));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
+*/
+
+ /*
+ guardar imagenes en dropbox y guardar el id
+ @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String> licencePlate,
+                                      @RequestParam("description") Optional<String> description,
+                                      @RequestParam("cylinder_capacity") Optional<String> cylinder_capacity,
+                                      @RequestParam("capacity") Optional<Integer> capacity,
+                                      @RequestParam("model_year") Optional<String> model_year,
+                                      @RequestParam("imagen") Optional<MultipartFile> imagen,
+                                      @RequestParam("typeCar") Optional<TypeCar> typeCar) {
+        try {
+            Car car = new Car();
+            car.setLicencePlate(licencePlate.orElse(null));
+            car.setDescription(description.orElse(null));
+            car.setCylinder_capacity(cylinder_capacity.orElse(null));
+            car.setCapacity(capacity.orElse(null));
+            car.setModel_year(model_year.orElse(null));
+            if (imagen.isPresent() && !imagen.get().isEmpty()) {
+                MultipartFile file = imagen.get();
+                String filename = file.getOriginalFilename();
+                byte[] fileBytes = file.getBytes();
+                Path tempFilePath = Paths.get(System.getProperty("java.io.tmpdir"), filename);
+                Files.write(tempFilePath, fileBytes);
+
+                String accessToken = "sl.BhlBUXfRiR-fvRGE4tbSdjrDEsT_ea6HpfkUIcJNURWqBGyeJSzr8ScRM4MMAx614cs1GNE5qmvjRtln5OzapDw47v3VWlbGACX_tzur3pYvrrZ5lGhIvHDrrzeJFTkpS-5xvkkoiWoM";
+
+                DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
+                DbxClientV2 client = new DbxClientV2(config, accessToken);
+
+                try (InputStream in = new FileInputStream(tempFilePath.toFile())) {
+                    FileMetadata metadata = client.files()
+                            .uploadBuilder("/cars/" + filename)
+                            .withMode(WriteMode.ADD)
+                            .uploadAndFinish(in);
+
+                    String imageUrl = metadata.getPathDisplay();
+                    String imageId = metadata.getId();
+                    System.out.println("imageId !!!!" + imageId);
+                    car.setImage(imageId+imageUrl);
+                } catch (UploadErrorException e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                } catch (DbxException | IOException e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                } finally {
+                    Files.deleteIfExists(tempFilePath);
+                }
+            }
+
+            car.setTypeCar(typeCar.orElse(null));
+            return ResponseEntity.ok(carRepository.save(car));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
  */
