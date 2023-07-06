@@ -20,7 +20,8 @@ public class RentACarApplication  {
     public static void main(String[] args) {
         SpringApplication.run(RentACarApplication.class, args);
     }
-        @Autowired
+
+    /*@Autowired
         PasswordEncoder passwordEncoder;
         @Autowired
         UserRepository userRepository;
@@ -54,7 +55,7 @@ public class RentACarApplication  {
                 userRepository.save(userEntity2);
             };
     }
-
+*/
 }
 /*
 

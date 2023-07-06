@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk
 
-COPY target/Rent_a_Car-0.0.2-SNAPSHOT.jar app.jar
+COPY target/Rent_a_Car-0.0.3-SNAPSHOT.jar app.jar
 
 VOLUME /files
 

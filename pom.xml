@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.Rent_a_Car</groupId>
     <artifactId>Rent_a_Car</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>Rent_a_Car</name>
     <description>Rent_a_Car</description>
     <properties>
