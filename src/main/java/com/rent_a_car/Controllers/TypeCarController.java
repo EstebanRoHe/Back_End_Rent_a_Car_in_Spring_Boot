@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/TypeCar")
 @PreAuthorize("hasRole('ADMIN')")
-
+@CrossOrigin(origins="*", maxAge = 3600)
 public class TypeCarController {
     @Autowired
     private TypeCarRepository typeCarRepository;
@@ -70,6 +70,7 @@ public class TypeCarController {
 
     @GetMapping("/filtro")
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<TypeCar>> getTypeCarDescription(@RequestParam String description) {
         List<TypeCar> typeCar = typeCarRepository.findByDescriptionContainingIgnoreCase(description);
         if (!typeCar.isEmpty()) {

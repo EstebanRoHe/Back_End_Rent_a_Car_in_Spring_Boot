@@ -13,6 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/Email")
 @PreAuthorize("permitAll()")
+@CrossOrigin(origins="*", maxAge = 3600)
 public class EmailController {
     @Autowired
     private IEmailService emailService;

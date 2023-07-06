@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(path = "/User")
 @AllArgsConstructor
+@CrossOrigin(origins="*", maxAge = 3600)
 public class UsernameController {
     @Autowired
     private UserRepository usernameRepository;
@@ -105,6 +106,7 @@ public class UsernameController {
 
     @GetMapping("/name")
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<UserEntity>> getUsersByName(@RequestParam String name) {
         List<UserEntity> users = usernameRepository.findByNameContainingIgnoreCase(name);
         if (!users.isEmpty()) {
@@ -132,6 +134,7 @@ public class UsernameController {
 
     @GetMapping("/username")
     @PreAuthorize("permitAll()")
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<String>> getAllUsernames() {
         List<String> usernames = usernameRepository
                                 .findAll().stream()

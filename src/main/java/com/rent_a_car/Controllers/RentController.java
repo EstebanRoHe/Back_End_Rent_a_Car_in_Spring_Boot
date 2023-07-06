@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/Rent")
 @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+@CrossOrigin(origins="*", maxAge = 3600)
 public class RentController {
     @Autowired
     private RentRepository rentRepository;
@@ -77,6 +78,7 @@ public class RentController {
 
     @GetMapping("/filtro")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<Rent>> getRentUsername(@RequestParam String username) {
         List<Rent> Rent = rentRepository.findByUsername_UsernameContainingIgnoreCase(username);
         if (!Rent.isEmpty()) {
@@ -88,6 +90,7 @@ public class RentController {
 
     @GetMapping("/username/{username}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<Rent>> getRentByUsername(@PathVariable String username) {
         List<Rent> rentList = rentRepository.findByUsername_Username(username);
         if (!rentList.isEmpty()) {

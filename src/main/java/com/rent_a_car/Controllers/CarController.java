@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/Car")
+@CrossOrigin(origins="*", maxAge = 3600)
 public class CarController {
     @Autowired
     private CarRepository carRepository;
@@ -114,6 +115,7 @@ public class CarController {
 
     @GetMapping("/filtro")
     @PreAuthorize("hasRole('ADMIN') or hasAnyRole('USER')")
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<Car>> getCarLicencePlate(@RequestParam String licencePlate) {
         List<Car> Car = carRepository.findByLicencePlateContainingIgnoreCase(licencePlate);
         if (!Car.isEmpty()) {
@@ -125,6 +127,7 @@ public class CarController {
 
     @GetMapping("/filtrodescription")
     @PreAuthorize("permitAll()")
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<Car>> getCarDescription(@RequestParam String description) {
         List<Car> Car = carRepository.findByTypeCar_DescriptionContainingIgnoreCase (description);
         if (!Car.isEmpty()) {
