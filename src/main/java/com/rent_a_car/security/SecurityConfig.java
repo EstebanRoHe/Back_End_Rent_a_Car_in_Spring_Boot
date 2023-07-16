@@ -82,8 +82,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("https://stunning-chimera-6ffc5e.netlify.app/");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("https://stunning-chimera-6ffc5e.netlify.app/");
+        configuration.addAllowedMethod("https://stunning-chimera-6ffc5e.netlify.app/");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
