@@ -14,14 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/Log")
-@CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
+@CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app", maxAge = 3600)
 public class LogController {
     @Autowired
     private LogRepository logRepository;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app", maxAge = 3600)
     public ResponseEntity<List<Log>> findAll() {
         List<Log> list = new ArrayList<Log>();
         logRepository.findAll().forEach(e-> list.add(e));
@@ -30,7 +30,7 @@ public class LogController {
 
     @PostMapping
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app", maxAge = 3600)
     public ResponseEntity create(@RequestBody Log log){
 
         return  ResponseEntity.ok(logRepository.save(log));
@@ -38,7 +38,7 @@ public class LogController {
 
     @GetMapping("/filtrousername")
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app", maxAge = 3600)
     public ResponseEntity<List<Log>> getLogByUsername(@RequestParam String username) {
         List<Log> logs = logRepository.findByUsuarioContainingIgnoreCase(username);
         if (!logs.isEmpty()) {
@@ -51,7 +51,7 @@ public class LogController {
 
     @GetMapping("/filtrometodo")
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app", maxAge = 3600)
     public ResponseEntity<List<Log>> getLogByMetodo(@RequestParam String metodo) {
         List<Log> logs = logRepository.findByMetodoContainingIgnoreCase(metodo);
         if (!logs.isEmpty()) {
