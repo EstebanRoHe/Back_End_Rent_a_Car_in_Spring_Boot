@@ -21,6 +21,7 @@ public class RentController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<List<Rent>> findAll(){
         List<Rent> list = new ArrayList<Rent>();
         rentRepository.findAll().forEach(e->list.add(e));
@@ -29,6 +30,7 @@ public class RentController {
 
     @GetMapping("/{idRent}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<Rent> findById(@PathVariable Long idRent){
         if(!rentRepository.findById(idRent).isPresent()){
             ResponseEntity.badRequest().build();
@@ -38,6 +40,7 @@ public class RentController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity create (@RequestBody Rent rent){
        if(rentRepository.existsByCar_IdCar(rent.getCar().getIdCar())){
             return ResponseEntity.badRequest().build();
@@ -53,6 +56,7 @@ public class RentController {
 
     @PutMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<Rent> update(@RequestBody Rent rent){
         if(!rentRepository.findById(rent.getIdRent()).isPresent()){
             ResponseEntity.badRequest().build();
@@ -63,6 +67,7 @@ public class RentController {
 
     @DeleteMapping("/{idRent}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<Rent> delete(@PathVariable Long idRent){
         if(!rentRepository.findById(idRent).isPresent()){
             ResponseEntity.badRequest().build();
@@ -73,6 +78,7 @@ public class RentController {
 
     @GetMapping("/filtro")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') ")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<List<Rent>> getRentUsername(@RequestParam String username) {
         List<Rent> Rent = rentRepository.findByUsername_UsernameContainingIgnoreCase(username);
         if (!Rent.isEmpty()) {
@@ -84,6 +90,7 @@ public class RentController {
 
     @GetMapping("/username/{username}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<List<Rent>> getRentByUsername(@PathVariable String username) {
         List<Rent> rentList = rentRepository.findByUsername_Username(username);
         if (!rentList.isEmpty()) {

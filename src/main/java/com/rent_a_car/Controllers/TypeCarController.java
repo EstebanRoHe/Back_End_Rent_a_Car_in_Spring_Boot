@@ -21,6 +21,7 @@ public class TypeCarController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<List<TypeCar>> findAll(){
         List<TypeCar> list = new ArrayList<TypeCar>();
         typeCarRepository.findAll().forEach(e->list.add(e));
@@ -29,6 +30,7 @@ public class TypeCarController {
 
     @GetMapping("/{id_typeCar}")
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<TypeCar> findById(@PathVariable Long id_typeCar){
         if(!typeCarRepository.findById(id_typeCar).isPresent()){
             ResponseEntity.badRequest().build();
@@ -38,12 +40,14 @@ public class TypeCarController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity create (@RequestBody TypeCar typeCar){
         return ResponseEntity.ok(typeCarRepository.save(typeCar));
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<TypeCar> update(@RequestBody TypeCar typeCar){
         if(!typeCarRepository.findById(typeCar.getId_typeCar()).isPresent()){
             ResponseEntity.badRequest().build();
@@ -53,6 +57,7 @@ public class TypeCarController {
 
     @DeleteMapping("/{id_typeCar}")
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<TypeCar> delete(@PathVariable Long id_typeCar){
         if(!typeCarRepository.findById(id_typeCar).isPresent()){
             ResponseEntity.badRequest().build();
@@ -64,6 +69,7 @@ public class TypeCarController {
 
     @GetMapping("/filtro")
     @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin(origins="https://stunning-chimera-6ffc5e.netlify.app/", maxAge = 3600)
     public ResponseEntity<List<TypeCar>> getTypeCarDescription(@RequestParam String description) {
         List<TypeCar> typeCar = typeCarRepository.findByDescriptionContainingIgnoreCase(description);
         if (!typeCar.isEmpty()) {
