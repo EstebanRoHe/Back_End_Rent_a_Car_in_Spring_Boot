@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/Car")
-@CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+@CrossOrigin(origins="*", maxAge = 3600)
 public class CarController {
     @Autowired
     private CarRepository carRepository;
@@ -33,7 +33,7 @@ public class CarController {
 
     @GetMapping
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<Car>> findAll(){
         List<Car> list=new ArrayList<Car>();
         carRepository.findAll().forEach(e->list.add(e));
@@ -42,7 +42,7 @@ public class CarController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String> licencePlate,
                                       @RequestParam("description") Optional<String> description,
                                       @RequestParam("cylinder_capacity") Optional<String> cylinder_capacity,
@@ -82,7 +82,7 @@ public class CarController {
 
     @GetMapping("/{idCar}")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<Car> findById(@PathVariable Long idCar){
         if(!carRepository.findById(idCar).isPresent()){
             ResponseEntity.badRequest().build();
@@ -92,7 +92,7 @@ public class CarController {
 
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<Car> update(@RequestBody Car car){
         if(!carRepository.findById(car.getIdCar()).isPresent()){
             ResponseEntity.badRequest().build();
@@ -103,7 +103,7 @@ public class CarController {
 
     @DeleteMapping("/{idCar}")
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<Car> delete(@PathVariable Long idCar){
         if(!carRepository.findById(idCar).isPresent()){
             ResponseEntity.badRequest().build();
@@ -115,7 +115,7 @@ public class CarController {
 
     @GetMapping("/filtro")
     @PreAuthorize("hasRole('ADMIN') or hasAnyRole('USER')")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<Car>> getCarLicencePlate(@RequestParam String licencePlate) {
         List<Car> Car = carRepository.findByLicencePlateContainingIgnoreCase(licencePlate);
         if (!Car.isEmpty()) {
@@ -127,7 +127,7 @@ public class CarController {
 
     @GetMapping("/filtrodescription")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
+    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<List<Car>> getCarDescription(@RequestParam String description) {
         List<Car> Car = carRepository.findByTypeCar_DescriptionContainingIgnoreCase (description);
         if (!Car.isEmpty()) {
