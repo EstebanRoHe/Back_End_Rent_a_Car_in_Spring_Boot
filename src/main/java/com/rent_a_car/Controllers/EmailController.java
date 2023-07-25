@@ -13,14 +13,14 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/Email")
 @PreAuthorize("permitAll()")
-@CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+@CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
 public class EmailController {
     @Autowired
     private IEmailService emailService;
 
     @PostMapping("/sendMessage")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<?> receiveRequestEmail(@RequestBody ContactDTO contactDTO){
         System.out.println("Messaje recibido" + contactDTO);
         emailService.sendEmail(contactDTO.getToUser(), contactDTO.getSubjet(), contactDTO.getMessage());

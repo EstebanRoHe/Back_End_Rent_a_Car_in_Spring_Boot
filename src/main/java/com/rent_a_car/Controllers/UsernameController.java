@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(path = "/User")
 @AllArgsConstructor
-@CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+@CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
 public class UsernameController {
     @Autowired
     private UserRepository usernameRepository;
@@ -36,7 +36,7 @@ public class UsernameController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<List<UserEntity>> findAll(){
         List<UserEntity> list = new ArrayList<UserEntity>();
         usernameRepository.findAll().forEach(e->list.add(e));
@@ -44,7 +44,7 @@ public class UsernameController {
     }
     @GetMapping("/{idUser}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<UserEntity>findById(@PathVariable Long idUser){
 
         if(!usernameRepository.findById(idUser).isPresent()){
@@ -54,7 +54,7 @@ public class UsernameController {
     }
     @PostMapping
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<?> createUser(@RequestBody CreateUserDTO createUserDTO){
         if (usernameRepository.existsByUsername(createUserDTO.getUsername())) {
             return ResponseEntity.badRequest().build();
@@ -85,7 +85,7 @@ public class UsernameController {
 
     @DeleteMapping("/{idUser}")
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<UserEntity> delete(@PathVariable Long idUser){
         if(!usernameRepository.findById(idUser).isPresent()){
             ResponseEntity.badRequest().build();
@@ -96,7 +96,7 @@ public class UsernameController {
 
     @PutMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<UserEntity> update(@RequestBody UserEntity user){
         if(!usernameRepository.findById(user.getIdUser()).isPresent()){
             ResponseEntity.badRequest().build();
@@ -106,7 +106,7 @@ public class UsernameController {
 
     @GetMapping("/name")
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<List<UserEntity>> getUsersByName(@RequestParam String name) {
         List<UserEntity> users = usernameRepository.findByNameContainingIgnoreCase(name);
         if (!users.isEmpty()) {
@@ -118,7 +118,7 @@ public class UsernameController {
 
     @GetMapping("/email")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<List<String>> getAllEmails() {
         List<String> emails = usernameRepository
                               .findAll()
@@ -134,7 +134,7 @@ public class UsernameController {
 
     @GetMapping("/username")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<List<String>> getAllUsernames() {
         List<String> usernames = usernameRepository
                                 .findAll().stream()
@@ -149,7 +149,7 @@ public class UsernameController {
 
     @GetMapping("/buscar/{username}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<UserEntity>findByIdUsername(@PathVariable String username){
         if(!usernameRepository.existsByUsername(username)){
             ResponseEntity.badRequest().build();
@@ -159,7 +159,7 @@ public class UsernameController {
 
     @PutMapping("/updatePassword")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')" )
-    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app", maxAge = 3600)
+    @CrossOrigin(origins="https://front-end-reant-a-car-in-react.vercel.app/", maxAge = 3600)
     public ResponseEntity<UserEntity> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
         UserEntity user = usernameRepository.findById(updatePasswordDTO.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
