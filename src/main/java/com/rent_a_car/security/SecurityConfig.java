@@ -81,9 +81,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("https://front-end-reant-a-car-in-react.vercel.app");
-        configuration.addAllowedHeader("https://front-end-reant-a-car-in-react.vercel.app");
-        configuration.addAllowedMethod("https://front-end-reant-a-car-in-react.vercel.app");
+        configuration.addAllowedOrigin("https://reat-a-car.onrender.com");
+        configuration.addAllowedHeader("https://reat-a-car.onrender.com");
+        configuration.addAllowedMethod("https://reat-a-car.onrender.com");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
