@@ -81,9 +81,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("https://stunning-chimera-6ffc5e.netlify.app");
-        configuration.addAllowedHeader("https://stunning-chimera-6ffc5e.netlify.app");
-        configuration.addAllowedMethod("https://stunning-chimera-6ffc5e.netlify.app");
+        configuration.addAllowedOrigin("https://front-end-reant-a-car-in-react.vercel.app");
+        configuration.addAllowedHeader("https://front-end-reant-a-car-in-react.vercel.app");
+        configuration.addAllowedMethod("https://front-end-reant-a-car-in-react.vercel.app");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
