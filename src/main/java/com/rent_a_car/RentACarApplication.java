@@ -20,17 +20,17 @@ public class RentACarApplication  {
     public static void main(String[] args) {
         SpringApplication.run(RentACarApplication.class, args);
     }
-/*
+
     @Autowired
         PasswordEncoder passwordEncoder;
         @Autowired
         UserRepository userRepository;
-
+/*
         @Bean
         CommandLineRunner init(){
             return args -> {
                 UserEntity userEntity = UserEntity.builder()
-                        .name("admin   ")
+                        .name("admin")
                         .lastName("admin")
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
@@ -55,7 +55,8 @@ public class RentACarApplication  {
                 userRepository.save(userEntity2);
             };
     }
-*/
+
+ */
 }
 /*
 @SpringBootApplication
