@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
-
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +19,7 @@ public class Car implements Serializable {
     private int capacity;
     private String model_year;
     private String image;
+    private int price;
     @OneToOne()
     @JoinColumn(name = "typeCar")
     private TypeCar typeCar;

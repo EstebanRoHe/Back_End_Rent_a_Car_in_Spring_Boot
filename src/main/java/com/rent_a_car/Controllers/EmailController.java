@@ -20,7 +20,6 @@ public class EmailController {
 
     @PostMapping("/sendMessage")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://reant.vercel.app", maxAge = 3600)
     public ResponseEntity<?> receiveRequestEmail(@RequestBody ContactDTO contactDTO){
         System.out.println("Messaje recibido" + contactDTO);
         emailService.sendEmail(contactDTO.getToUser(), contactDTO.getSubjet(), contactDTO.getMessage());

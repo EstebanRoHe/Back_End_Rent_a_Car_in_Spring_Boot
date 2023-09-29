@@ -33,7 +33,6 @@ public class CarController {
 
     @GetMapping
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://reant.vercel.app", maxAge = 3600)
     public ResponseEntity<List<Car>> findAll(){
         List<Car> list=new ArrayList<Car>();
         carRepository.findAll().forEach(e->list.add(e));
@@ -42,13 +41,13 @@ public class CarController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="*", maxAge = 3600)
     public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String> licencePlate,
                                       @RequestParam("description") Optional<String> description,
                                       @RequestParam("cylinder_capacity") Optional<String> cylinder_capacity,
                                       @RequestParam("capacity") Optional<Integer> capacity,
                                       @RequestParam("model_year") Optional<String> model_year,
                                       @RequestParam("imagen") Optional<MultipartFile> imagen,
+                                      @RequestParam("price") Optional<Integer> price,
                                       @RequestParam("typeCar") Optional<TypeCar> typeCar) {
         try {
             Car car = new Car();
@@ -70,7 +69,7 @@ public class CarController {
                 String imageUrl = (String) uploadResult.get("secure_url");
                 car.setImage(imageUrl);
             }
-
+            car.setPrice(price.orElse(null));
             car.setTypeCar(typeCar.orElse(null));
             return ResponseEntity.ok(carRepository.save(car));
         } catch (Exception e) {
@@ -82,7 +81,6 @@ public class CarController {
 
     @GetMapping("/{idCar}")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://reant.vercel.app", maxAge = 3600)
     public ResponseEntity<Car> findById(@PathVariable Long idCar){
         if(!carRepository.findById(idCar).isPresent()){
             ResponseEntity.badRequest().build();
@@ -92,7 +90,6 @@ public class CarController {
 
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://reant.vercel.app", maxAge = 3600)
     public ResponseEntity<Car> update(@RequestBody Car car){
         if(!carRepository.findById(car.getIdCar()).isPresent()){
             ResponseEntity.badRequest().build();
@@ -103,7 +100,6 @@ public class CarController {
 
     @DeleteMapping("/{idCar}")
     @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins="https://reant.vercel.app", maxAge = 3600)
     public ResponseEntity<Car> delete(@PathVariable Long idCar){
         if(!carRepository.findById(idCar).isPresent()){
             ResponseEntity.badRequest().build();
@@ -115,7 +111,6 @@ public class CarController {
 
     @GetMapping("/filtro")
     @PreAuthorize("hasRole('ADMIN') or hasAnyRole('USER')")
-    @CrossOrigin(origins="https://reant.vercel.app", maxAge = 3600)
     public ResponseEntity<List<Car>> getCarLicencePlate(@RequestParam String licencePlate) {
         List<Car> Car = carRepository.findByLicencePlateContainingIgnoreCase(licencePlate);
         if (!Car.isEmpty()) {
@@ -127,7 +122,6 @@ public class CarController {
 
     @GetMapping("/filtrodescription")
     @PreAuthorize("permitAll()")
-    @CrossOrigin(origins="https://reant.vercel.app", maxAge = 3600)
     public ResponseEntity<List<Car>> getCarDescription(@RequestParam String description) {
         List<Car> Car = carRepository.findByTypeCar_DescriptionContainingIgnoreCase (description);
         if (!Car.isEmpty()) {
@@ -138,6 +132,10 @@ public class CarController {
     }
 
 }
+
+
+
+
 /*
 //guardar normal
     @PostMapping
@@ -190,65 +188,3 @@ public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String>
 }
 */
 
- /*
- guardar imagenes en dropbox y guardar el id
- @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<Car> create(@RequestParam("licencePlate") Optional<String> licencePlate,
-                                      @RequestParam("description") Optional<String> description,
-                                      @RequestParam("cylinder_capacity") Optional<String> cylinder_capacity,
-                                      @RequestParam("capacity") Optional<Integer> capacity,
-                                      @RequestParam("model_year") Optional<String> model_year,
-                                      @RequestParam("imagen") Optional<MultipartFile> imagen,
-                                      @RequestParam("typeCar") Optional<TypeCar> typeCar) {
-        try {
-            Car car = new Car();
-            car.setLicencePlate(licencePlate.orElse(null));
-            car.setDescription(description.orElse(null));
-            car.setCylinder_capacity(cylinder_capacity.orElse(null));
-            car.setCapacity(capacity.orElse(null));
-            car.setModel_year(model_year.orElse(null));
-            if (imagen.isPresent() && !imagen.get().isEmpty()) {
-                MultipartFile file = imagen.get();
-                String filename = file.getOriginalFilename();
-                byte[] fileBytes = file.getBytes();
-                Path tempFilePath = Paths.get(System.getProperty("java.io.tmpdir"), filename);
-                Files.write(tempFilePath, fileBytes);
-
-                String accessToken = "sl.BhlBUXfRiR-fvRGE4tbSdjrDEsT_ea6HpfkUIcJNURWqBGyeJSzr8ScRM4MMAx614cs1GNE5qmvjRtln5OzapDw47v3VWlbGACX_tzur3pYvrrZ5lGhIvHDrrzeJFTkpS-5xvkkoiWoM";
-
-                DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
-                DbxClientV2 client = new DbxClientV2(config, accessToken);
-
-                try (InputStream in = new FileInputStream(tempFilePath.toFile())) {
-                    FileMetadata metadata = client.files()
-                            .uploadBuilder("/cars/" + filename)
-                            .withMode(WriteMode.ADD)
-                            .uploadAndFinish(in);
-
-                    String imageUrl = metadata.getPathDisplay();
-                    String imageId = metadata.getId();
-                    System.out.println("imageId !!!!" + imageId);
-                    car.setImage(imageId+imageUrl);
-                } catch (UploadErrorException e) {
-                    e.printStackTrace();
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-                } catch (DbxException | IOException e) {
-                    e.printStackTrace();
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-                } finally {
-                    Files.deleteIfExists(tempFilePath);
-                }
-            }
-
-            car.setTypeCar(typeCar.orElse(null));
-            return ResponseEntity.ok(carRepository.save(car));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-
- */
